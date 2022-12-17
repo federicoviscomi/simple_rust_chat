@@ -4,7 +4,8 @@ use chat::Server;
 use std::sync::Arc;
 use tokio::sync::broadcast;
 use tokio::sync::broadcast::error::RecvError;
-use tokio::sync::broadcast::{Receiver, Sender};
+use tokio::sync::broadcast::Receiver;
+use tokio::sync::broadcast::Sender;
 
 pub struct Chats {
     name: Arc<String>,

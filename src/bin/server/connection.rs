@@ -3,9 +3,13 @@ use crate::chats_map::ChatTracker;
 use async_std::io::BufReader;
 use async_std::net::TcpStream;
 use async_std::prelude::*;
-use async_std::sync::{Arc, Mutex, MutexGuard};
-use chat::utils::{self, ChatResult};
-use chat::{Client, Server};
+use async_std::sync::Arc;
+use async_std::sync::Mutex;
+use async_std::sync::MutexGuard;
+use chat::utils;
+use chat::utils::ChatResult;
+use chat::Client;
+use chat::Server;
 
 pub async fn handle(socket: TcpStream, chats: Arc<ChatTracker>) -> ChatResult<()> {
     let leaving: Arc<Leaving> = Arc::new(Leaving::new(socket.clone()));

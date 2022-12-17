@@ -1,10 +1,16 @@
-use async_std::io::{BufReader, Lines, Stdin};
+use async_std::io::BufReader;
+use async_std::io::Lines;
+use async_std::io::Stdin;
 use async_std::net::TcpStream;
 use async_std::prelude::*;
 use async_std::task;
-use async_std::{io, net};
-use chat::utils::{self, ChatError, ChatResult};
-use chat::{Client, Server};
+use async_std::io;
+use async_std::net;
+use chat::utils;
+use chat::utils::ChatError;
+use chat::utils::ChatResult;
+use chat::Client;
+use chat::Server;
 use std::ptr::addr_of_mut;
 use std::sync::Arc;
 

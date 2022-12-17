@@ -1,8 +1,11 @@
 use async_std::net;
-use async_std::net::{Incoming, TcpListener, TcpStream};
+use async_std::net::Incoming;
+use async_std::net::TcpListener;
+use async_std::net::TcpStream;
 use async_std::prelude::StreamExt;
 use async_std::task;
-use chat::utils::{ChatError, ChatResult};
+use chat::utils::ChatError;
+use chat::utils::ChatResult;
 use std::future::Future;
 use std::sync::Arc;
 
