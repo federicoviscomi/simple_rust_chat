@@ -30,7 +30,7 @@ fn test_client() {
         chat_name: Arc::new(String::from("Chat")),
         message: Arc::new(String::from("Message sent!")),
     };
-    let json = serde_json::to_string(&client).unwrap();
+    let json: String = serde_json::to_string(&client).unwrap();
     println!("{:?}", json);
     assert_eq!(
         json,

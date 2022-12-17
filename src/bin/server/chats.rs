@@ -4,19 +4,20 @@ use chat::Server;
 use std::sync::Arc;
 use tokio::sync::broadcast;
 use tokio::sync::broadcast::error::RecvError;
+use tokio::sync::broadcast::{Receiver, Sender};
 
 pub struct Chats {
     name: Arc<String>,
-    publisher: broadcast::Sender<Arc<String>>,
+    publisher: Sender<Arc<String>>,
 }
 
 impl Chats {
     pub fn new(name: Arc<String>) -> Chats {
-        let (publisher, _) = broadcast::channel(1000);
+        let (publisher, _): (Sender<Arc<String>>, Receiver<Arc<String>>) = broadcast::channel(1000);
         Chats { name, publisher }
     }
     pub fn join(&self, leaving: Arc<Leaving>) -> () {
-        let receiver = self.publisher.subscribe();
+        let receiver: Receiver<Arc<String>> = self.publisher.subscribe();
         task::spawn(sub(self.name.clone(), receiver, leaving));
     }
     pub fn post(&self, message: Arc<String>) -> () {
@@ -24,11 +25,7 @@ impl Chats {
     }
 }
 
-async fn sub(
-    chat_name: Arc<String>,
-    mut receiver: broadcast::Receiver<Arc<String>>,
-    leaving: Arc<Leaving>,
-) {
+async fn sub(chat_name: Arc<String>, mut receiver: Receiver<Arc<String>>, leaving: Arc<Leaving>) {
     loop {
         let packet: Server = match receiver.recv().await {
             Ok(message) => Server::Message {

@@ -8,9 +8,9 @@ use chat::{Client, Server};
 use std::ptr::addr_of_mut;
 use std::sync::Arc;
 
-async fn send(mut send: net::TcpStream) -> ChatResult<()> {
+async fn send(mut send: TcpStream) -> ChatResult<()> {
     println!("Options \njoin CHAT\npost CHAT MESSAGE\nType CTRL-C to close the connection.");
-    let mut options: Lines<BufReader<Stdin>> = io::BufReader::new(io::stdin()).lines();
+    let mut options: Lines<BufReader<Stdin>> = BufReader::new(io::stdin()).lines();
     while let Some(option_result) = options.next().await {
         let opt: String = option_result?;
         let req: Client = match parse_input(&opt) {
@@ -20,11 +20,11 @@ async fn send(mut send: net::TcpStream) -> ChatResult<()> {
         utils::send_json(&mut send, &req).await?;
         send.flush().await?;
     }
-    Result::Ok(())
+    Ok(())
 }
 
-async fn messages(server: net::TcpStream) -> ChatResult<()> {
-    let buf: BufReader<TcpStream> = io::BufReader::new(server);
+async fn messages(server: TcpStream) -> ChatResult<()> {
+    let buf: BufReader<TcpStream> = BufReader::new(server);
     let mut stream = utils::receive(buf);
     while let Some(msg) = stream.next().await {
         match msg? {
@@ -74,9 +74,9 @@ fn parse_input(line: &str) -> Option<Client> {
 }
 
 fn main() -> ChatResult<()> {
-    let addr = std::env::args().nth(1).expect("ADDRESS:PORT");
+    let addr: String = std::env::args().nth(1).expect("ADDRESS:PORT");
     task::block_on(async {
-        let socket: TcpStream = net::TcpStream::connect(addr).await?;
+        let socket: TcpStream = TcpStream::connect(addr).await?;
         socket.set_nodelay(true)?;
         let send = send(socket.clone());
         let replies = messages(socket);
