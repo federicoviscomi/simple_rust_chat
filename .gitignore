@@ -1,3 +1,8 @@
 .idea/
 /target
 /Cargo.lock
+/.vs/simple_rust_chat/v17/.wsuo
+/.vs/simple_rust_chat/FileContentIndex/9968aaf3-2ae0-4ea6-bb30-9b2a5c7722eb.vsidx
+/.vs/simple_rust_chat/FileContentIndex/read.lock
+/.vs/slnx.sqlite
+/.vs/VSWorkspaceState.json
